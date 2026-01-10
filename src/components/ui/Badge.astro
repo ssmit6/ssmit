@@ -1,0 +1,85 @@
+---
+/**
+ * Badge Component
+ *
+ * Small label/tag for status indicators, categories, or highlights.
+ *
+ * Features:
+ * - Multiple color variants
+ * - Optional pulse dot (for "live" indicators)
+ * - Subtle glass-like styling
+ */
+
+interface Props {
+  /** Badge color variant */
+  variant?: 'default' | 'accent' | 'success' | 'warning' | 'error';
+  /** Show pulsing dot indicator */
+  dot?: boolean;
+  /** Dot color (defaults to variant color) */
+  dotColor?: 'green' | 'accent' | 'yellow' | 'red' | 'blue';
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  dot = false,
+  dotColor,
+  class: className = '',
+} = Astro.props;
+
+// Base classes
+const baseClasses = `
+  inline-flex items-center gap-2
+  px-3 py-1.5 rounded-full
+  text-xs font-medium
+  transition-colors duration-fast
+`;
+
+// Variant classes
+const variantClasses = {
+  default: 'bg-white/5 text-gray-300 border border-white/10',
+  accent: 'bg-accent/10 text-accent-light border border-accent/20',
+  success: 'bg-success/10 text-success border border-success/20',
+  warning: 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20',
+  error: 'bg-error/10 text-error border border-error/20',
+};
+
+// Dot color classes
+const dotColorClasses = {
+  green: 'bg-green-500',
+  accent: 'bg-accent',
+  yellow: 'bg-yellow-400',
+  red: 'bg-error',
+  blue: 'bg-blue-500',
+};
+
+// Determine dot color based on variant or explicit prop
+const resolvedDotColor = dotColor || {
+  default: 'green',
+  accent: 'accent',
+  success: 'green',
+  warning: 'yellow',
+  error: 'red',
+}[variant] as keyof typeof dotColorClasses;
+---
+
+<span class:list={[baseClasses, variantClasses[variant], className]}>
+  {dot && (
+    <span class="relative flex h-2 w-2">
+      <span
+        class:list={[
+          'absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping',
+          dotColorClasses[resolvedDotColor],
+        ]}
+      />
+      <span
+        class:list={[
+          'relative inline-flex h-2 w-2 rounded-full',
+          dotColorClasses[resolvedDotColor],
+        ]}
+      />
+    </span>
+  )}
+  <slot />
+</span>

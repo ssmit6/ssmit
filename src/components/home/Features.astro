@@ -1,0 +1,162 @@
+---
+/**
+ * Features Grid Component
+ *
+ * Displays a grid of feature cards highlighting product capabilities.
+ * Uses a 3-column layout on desktop, 2 on tablet, 1 on mobile.
+ *
+ * Features:
+ * - Centered header with badge, title, subtitle
+ * - Staggered fade-in animations
+ * - Subtle gradient background
+ * - Fully configurable via props
+ */
+
+import Container from '@components/ui/Container.astro';
+import Badge from '@components/ui/Badge.astro';
+import Card from '@components/ui/Card.astro';
+import FadeIn from '@components/animations/FadeIn';
+
+type IconGradient = 'violet' | 'cyan' | 'orange' | 'green' | 'pink';
+
+interface Feature {
+  icon: string;
+  title: string;
+  description: string;
+  iconGradient?: IconGradient;
+  href?: string;
+}
+
+interface Props {
+  /** Section ID for navigation */
+  id?: string;
+  /** Badge text */
+  badge?: string;
+  /** Section title */
+  title?: string;
+  /** Section subtitle */
+  subtitle?: string;
+  /** Features to display */
+  features?: Feature[];
+  /** Number of columns on desktop */
+  columns?: 2 | 3 | 4;
+  /** Show background gradient */
+  showBackground?: boolean;
+}
+
+const {
+  id = 'features',
+  badge = 'Features',
+  title = 'Everything You Need',
+  subtitle = 'Packed with features designed to help you succeed.',
+  features = [
+    {
+      icon: '⚡',
+      title: 'Lightning Fast',
+      description: 'Optimized performance with instant load times and smooth 60fps animations throughout.',
+      iconGradient: 'orange' as IconGradient,
+    },
+    {
+      icon: '🎨',
+      title: 'Beautiful Design',
+      description: 'Crafted with meticulous attention to detail. Every pixel has a purpose.',
+      iconGradient: 'pink' as IconGradient,
+    },
+    {
+      icon: '📱',
+      title: 'Cross Platform',
+      description: 'Works seamlessly on iOS, Android, and web. One experience, everywhere.',
+      iconGradient: 'violet' as IconGradient,
+    },
+    {
+      icon: '🔄',
+      title: 'Real-time Sync',
+      description: 'Your data syncs instantly across all your devices. Always up to date.',
+      iconGradient: 'cyan' as IconGradient,
+    },
+    {
+      icon: '🌙',
+      title: 'Dark Mode',
+      description: 'Easy on the eyes with a carefully crafted dark theme. Day or night.',
+      iconGradient: 'violet' as IconGradient,
+    },
+    {
+      icon: '♿',
+      title: 'Accessible',
+      description: 'Built for everyone. Full keyboard navigation and screen reader support.',
+      iconGradient: 'green' as IconGradient,
+    },
+  ],
+  columns = 3,
+  showBackground = true,
+} = Astro.props;
+
+// Grid column classes based on columns prop
+const gridClasses = {
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-2 lg:grid-cols-3',
+  4: 'md:grid-cols-2 lg:grid-cols-4',
+};
+
+// Calculate animation delays (staggered by row for visual effect)
+const getDelay = (index: number) => {
+  const row = Math.floor(index / columns);
+  const col = index % columns;
+  return 0.1 + (row * 0.15) + (col * 0.05);
+};
+---
+
+<section
+  id={id}
+  class="section relative overflow-hidden"
+  aria-labelledby="features-title"
+>
+  <!-- Background Gradient -->
+  {showBackground && (
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.03] to-transparent"></div>
+      <!-- Subtle side gradients -->
+      <div class="absolute top-1/2 -left-32 -translate-y-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px]"></div>
+      <div class="absolute top-1/2 -right-32 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
+    </div>
+  )}
+
+  <Container class="relative">
+    <!-- Header -->
+    <div class="text-center mb-12 lg:mb-16">
+      <FadeIn client:visible>
+        <Badge class="mb-4">{badge}</Badge>
+      </FadeIn>
+
+      <FadeIn client:visible delay={0.05}>
+        <h2 id="features-title" class="h2 mb-4">
+          {title}
+        </h2>
+      </FadeIn>
+
+      <FadeIn client:visible delay={0.1}>
+        <p class="lead max-w-2xl mx-auto">
+          {subtitle}
+        </p>
+      </FadeIn>
+    </div>
+
+    <!-- Features Grid -->
+    <div class:list={['grid gap-6', gridClasses[columns]]}>
+      {features.map((feature, index) => (
+        <FadeIn client:visible delay={getDelay(index)}>
+          <Card
+            icon={feature.icon}
+            title={feature.title}
+            description={feature.description}
+            iconGradient={feature.iconGradient || 'violet'}
+            href={feature.href}
+          />
+        </FadeIn>
+      ))}
+    </div>
+
+    <!-- Optional bottom CTA slot -->
+    <slot name="cta" />
+  </Container>
+</section>

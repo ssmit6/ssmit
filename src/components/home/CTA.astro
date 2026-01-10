@@ -1,0 +1,233 @@
+---
+/**
+ * CTA Section Component
+ *
+ * Final call-to-action section for conversions.
+ * Designed to capture leads through email signup.
+ *
+ * Features:
+ * - Eye-catching gradient card
+ * - Email capture form with Netlify support
+ * - Trust indicators
+ * - Direct contact option
+ * - Animated elements
+ */
+
+import Container from '@components/ui/Container.astro';
+import Button from '@components/ui/Button.astro';
+import Input from '@components/ui/Input.astro';
+import FadeIn from '@components/animations/FadeIn';
+import { siteConfig } from '@lib/config';
+
+interface Props {
+  /** Section ID */
+  id?: string;
+  /** Main headline */
+  headline?: string;
+  /** Supporting text */
+  description?: string;
+  /** Email input placeholder */
+  emailPlaceholder?: string;
+  /** Submit button text */
+  buttonText?: string;
+  /** Form name for Netlify */
+  formName?: string;
+  /** Show contact email */
+  showContactEmail?: boolean;
+  /** Trust indicators */
+  trustIndicators?: string[];
+}
+
+const {
+  id = 'waitlist',
+  headline = "Let's Build Something Together",
+  description = "Whether you have an idea that needs bringing to life, or you want to join the Cyclia community — we'd love to hear from you.",
+  emailPlaceholder = 'Enter your email',
+  buttonText = 'Join Waitlist',
+  formName = 'waitlist-signup',
+  showContactEmail = true,
+  trustIndicators = ['No spam, ever', 'Unsubscribe anytime', 'Privacy first'],
+} = Astro.props;
+
+const contactEmail = siteConfig.email;
+---
+
+<section id={id} class="section relative overflow-hidden" aria-labelledby="cta-title">
+  <!-- Background elements -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <!-- Gradient orbs -->
+    <div class="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px]"></div>
+    <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+  </div>
+
+  <Container size="narrow" class="relative">
+    <FadeIn client:visible>
+      <div class="relative rounded-3xl overflow-hidden">
+        <!-- Card background layers -->
+        <div class="absolute inset-0" aria-hidden="true">
+          <!-- Base gradient -->
+          <div class="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-white/[0.04] to-transparent"></div>
+
+          <!-- Accent gradient overlay -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-accent/10 via-transparent to-cyan-500/5"></div>
+
+          <!-- Grid pattern -->
+          <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+
+          <!-- Animated corner glow -->
+          <div class="absolute -top-20 -right-20 w-40 h-40 bg-accent/20 rounded-full blur-[80px] animate-pulse-slow"></div>
+          <div class="absolute -bottom-20 -left-20 w-32 h-32 bg-cyan-500/20 rounded-full blur-[60px] animate-pulse-slower"></div>
+        </div>
+
+        <!-- Border -->
+        <div class="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none"></div>
+
+        <!-- Content -->
+        <div class="relative p-8 md:p-12 lg:p-16">
+          <div class="text-center max-w-xl mx-auto">
+            <!-- Headline -->
+            <h2 id="cta-title" class="h2 mb-4">
+              {headline}
+            </h2>
+
+            <!-- Description -->
+            <p class="lead mb-8">
+              {description}
+            </p>
+
+            <!-- Email Signup Form -->
+            <form
+              name={formName}
+              class="max-w-md mx-auto mb-6"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+            >
+              <!-- Honeypot field for spam protection -->
+              <p class="hidden">
+                <label>
+                  Don't fill this out: <input name="bot-field" />
+                </label>
+              </p>
+              <input type="hidden" name="form-name" value={formName} />
+
+              <div class="flex flex-col sm:flex-row gap-3">
+                <div class="flex-1">
+                  <Input
+                    name="email"
+                    type="email"
+                    placeholder={emailPlaceholder}
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+                <Button type="submit" variant="primary" class="whitespace-nowrap">
+                  {buttonText}
+                  <svg
+                    slot="icon-right"
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </Button>
+              </div>
+            </form>
+
+            <!-- Trust indicators -->
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-8">
+              {trustIndicators.map((indicator) => (
+                <div class="flex items-center gap-2 text-sm text-gray-500">
+                  <svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                  <span>{indicator}</span>
+                </div>
+              ))}
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-4 mb-8">
+              <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+              <span class="text-sm text-gray-600">or</span>
+              <div class="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            </div>
+
+            <!-- Direct contact -->
+            {showContactEmail && (
+              <div class="text-center">
+                <p class="text-sm text-gray-500 mb-2">Have a project in mind?</p>
+                <a
+                  href={`mailto:${contactEmail}`}
+                  class="inline-flex items-center gap-2 text-accent-light hover:text-accent transition-colors duration-fast group"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  <span class="font-medium group-hover:underline">{contactEmail}</span>
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <!-- Decorative elements -->
+        <div class="absolute top-8 left-8 w-2 h-2 rounded-full bg-accent/50" aria-hidden="true"></div>
+        <div class="absolute top-8 right-8 w-2 h-2 rounded-full bg-cyan-500/50" aria-hidden="true"></div>
+        <div class="absolute bottom-8 left-8 w-2 h-2 rounded-full bg-cyan-500/50" aria-hidden="true"></div>
+        <div class="absolute bottom-8 right-8 w-2 h-2 rounded-full bg-accent/50" aria-hidden="true"></div>
+      </div>
+    </FadeIn>
+
+    <!-- Additional slot for custom content -->
+    <slot />
+  </Container>
+</section>
+
+<style>
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.2;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes pulse-slower {
+    0%, 100% {
+      opacity: 0.15;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.3;
+      transform: scale(1.15);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
+  }
+
+  .animate-pulse-slower {
+    animation: pulse-slower 5s ease-in-out infinite;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-pulse-slow,
+    .animate-pulse-slower {
+      animation: none;
+    }
+  }
+</style>

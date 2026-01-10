@@ -1,0 +1,152 @@
+---
+/**
+ * Home Page
+ *
+ * Main landing page featuring:
+ * - Hero section with animated elements
+ * - Product showcase for Cyclia
+ * - Features grid
+ * - Coming soon section (AI Photo Editor)
+ * - About section
+ * - CTA section
+ * - Footer with navigation and contact
+ */
+
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/common/Header.astro';
+import Footer from '@components/common/Footer.astro';
+import Hero from '@components/home/Hero.astro';
+import ProductShowcase from '@components/home/ProductShowcase.astro';
+import Features from '@components/home/Features.astro';
+import ComingSoon from '@components/home/ComingSoon.astro';
+import About from '@components/home/About.astro';
+import CTA from '@components/home/CTA.astro';
+import SmoothScroll from '@components/animations/SmoothScroll';
+---
+
+<Layout>
+  <SmoothScroll client:load>
+    <Header />
+
+    <!-- Hero Section -->
+    <Hero
+      badge="Introducing Cyclia"
+      headlineTop="We Build Apps"
+      headlineBottom="That People Love"
+      subtext="We craft thoughtful mobile experiences that solve real problems. Our debut app Cyclia is launching soon — join the waitlist to be first in line."
+      primaryCta="Join the Waitlist"
+      primaryCtaHref="#waitlist"
+      secondaryCta="Learn More"
+      secondaryCtaHref="#products"
+      phoneImage=""
+      phoneAlt="Cyclia app interface preview"
+    />
+
+    <!-- Product Showcase: Cyclia -->
+    <ProductShowcase
+      id="products"
+      badge="Our Flagship Product"
+      productName="Cyclia"
+      tagline="Your Daily Companion for Mindful Living"
+      description="Cyclia helps you build better habits, track your progress, and stay focused on what matters most. Designed with intention, built for your life."
+      features={[
+        {
+          icon: '📊',
+          title: 'Smart Insights',
+          description: 'Understand your patterns with beautiful analytics that actually make sense.',
+        },
+        {
+          icon: '🎯',
+          title: 'Goal Tracking',
+          description: 'Set meaningful goals and watch your progress unfold day by day.',
+        },
+        {
+          icon: '🔔',
+          title: 'Gentle Reminders',
+          description: 'Stay on track with notifications that respect your time and attention.',
+        },
+        {
+          icon: '🔒',
+          title: 'Privacy First',
+          description: 'Your data stays on your device. No accounts required, no tracking.',
+        },
+      ]}
+      ctaText="Join the Waitlist"
+      ctaHref="#waitlist"
+      secondaryCtaText=""
+      phoneImage=""
+      phoneAlt="Cyclia app dashboard"
+    />
+
+    <!-- Features Grid -->
+    <Features
+      id="features"
+      badge="Features"
+      title="Everything You Need"
+      subtitle="Powerful features designed with simplicity in mind. No learning curve, just results."
+      features={[
+        {
+          icon: '⚡',
+          title: 'Lightning Fast',
+          description: 'Optimized performance with instant load times and smooth 60fps animations throughout.',
+          iconGradient: 'orange',
+        },
+        {
+          icon: '🎨',
+          title: 'Beautiful Design',
+          description: 'Crafted with meticulous attention to detail. Every pixel has a purpose.',
+          iconGradient: 'pink',
+        },
+        {
+          icon: '📱',
+          title: 'Cross Platform',
+          description: 'Works seamlessly on iOS, Android, and web. One experience, everywhere.',
+          iconGradient: 'violet',
+        },
+        {
+          icon: '🔄',
+          title: 'Real-time Sync',
+          description: 'Your data syncs instantly across all your devices. Always up to date.',
+          iconGradient: 'cyan',
+        },
+        {
+          icon: '🌙',
+          title: 'Dark Mode',
+          description: 'Easy on the eyes with a carefully crafted dark theme. Day or night.',
+          iconGradient: 'violet',
+        },
+        {
+          icon: '♿',
+          title: 'Accessible',
+          description: 'Built for everyone. Full keyboard navigation and screen reader support.',
+          iconGradient: 'green',
+        },
+      ]}
+      columns={3}
+      showBackground={true}
+    />
+
+    <!-- Coming Soon: AI Photo Editor -->
+    <ComingSoon
+      id="ai-photo-editor"
+      badge="Coming 2025"
+      title="AI Photo Editor"
+      description="Professional-grade photo editing powered by cutting-edge AI. Transform your selfies and portraits with a single tap."
+      emailPlaceholder="Enter your email"
+      buttonText="Notify Me"
+      formName="ai-editor-waitlist"
+      privacyNote="Be the first to know when we launch. No spam, ever."
+      accentColor="violet"
+    />
+
+    <!-- About Section -->
+    <About />
+
+    <!-- CTA Section -->
+    <CTA />
+
+    <!-- Footer -->
+    <Footer />
+
+  </SmoothScroll>
+</Layout>

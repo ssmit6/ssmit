@@ -1,0 +1,170 @@
+---
+/**
+ * 404 Error Page
+ *
+ * Custom not found page with:
+ * - Clear error messaging
+ * - Helpful navigation options
+ * - On-brand visual design
+ * - Animated elements
+ */
+
+import Layout from '@layouts/Layout.astro';
+import Container from '@components/ui/Container.astro';
+import Button from '@components/ui/Button.astro';
+import Header from '@components/common/Header.astro';
+import Footer from '@components/common/Footer.astro';
+import FadeIn from '@components/animations/FadeIn';
+---
+
+<Layout
+  title="Page Not Found | SSMIT"
+  description="The page you're looking for doesn't exist or has been moved."
+>
+  <Header />
+
+  <main class="min-h-[80vh] flex items-center justify-center relative overflow-hidden">
+    <!-- Background elements -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <!-- Gradient orbs -->
+      <div class="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[150px] animate-float-slow"></div>
+      <div class="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px] animate-float-slower"></div>
+
+      <!-- Grid pattern -->
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+    </div>
+
+    <Container size="narrow" class="relative py-20">
+      <div class="text-center">
+        <!-- 404 Number -->
+        <FadeIn client:load>
+          <div class="relative inline-block mb-8">
+            <!-- Glowing background -->
+            <div class="absolute inset-0 bg-accent/20 blur-[60px] rounded-full" aria-hidden="true"></div>
+
+            <!-- Number -->
+            <h1 class="relative text-[120px] sm:text-[160px] md:text-[200px] font-display font-bold leading-none bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-transparent select-none">
+              404
+            </h1>
+          </div>
+        </FadeIn>
+
+        <!-- Message -->
+        <FadeIn client:load delay={0.1}>
+          <h2 class="h2 mb-4">Page Not Found</h2>
+        </FadeIn>
+
+        <FadeIn client:load delay={0.15}>
+          <p class="lead max-w-md mx-auto mb-10">
+            The page you're looking for doesn't exist or has been moved.
+            Let's get you back on track.
+          </p>
+        </FadeIn>
+
+        <!-- Actions -->
+        <FadeIn client:load delay={0.2}>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button href="/" size="lg">
+              <svg
+                slot="icon-left"
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+              Back to Home
+            </Button>
+
+            <Button href="/#products" variant="ghost" size="lg">
+              View Products
+            </Button>
+          </div>
+        </FadeIn>
+
+        <!-- Helpful Links -->
+        <FadeIn client:load delay={0.25}>
+          <div class="mt-12 pt-8 border-t border-white/5">
+            <p class="text-sm text-gray-600 mb-4">Or try one of these:</p>
+            <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <a
+                href="/#features"
+                class="text-sm text-gray-500 hover:text-white transition-colors duration-fast"
+              >
+                Features
+              </a>
+              <span class="text-gray-700" aria-hidden="true">&bull;</span>
+              <a
+                href="/#about"
+                class="text-sm text-gray-500 hover:text-white transition-colors duration-fast"
+              >
+                About Us
+              </a>
+              <span class="text-gray-700" aria-hidden="true">&bull;</span>
+              <a
+                href="/#waitlist"
+                class="text-sm text-gray-500 hover:text-white transition-colors duration-fast"
+              >
+                Contact
+              </a>
+            </div>
+          </div>
+        </FadeIn>
+
+        <!-- Easter egg: Animated glitch effect on hover -->
+        <div class="mt-16" aria-hidden="true">
+          <FadeIn client:load delay={0.3}>
+            <p class="text-xs text-gray-700 hover:text-gray-500 transition-colors cursor-default select-none">
+              Error Code: 404 | Lost in the digital void
+            </p>
+          </FadeIn>
+        </div>
+      </div>
+    </Container>
+  </main>
+
+  <Footer showBackToTop={false} />
+</Layout>
+
+<style>
+  @keyframes float-slow {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(30px, -30px) scale(1.05);
+    }
+  }
+
+  @keyframes float-slower {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(-20px, 20px) scale(0.95);
+    }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 10s ease-in-out infinite;
+  }
+
+  .animate-float-slower {
+    animation: float-slower 12s ease-in-out infinite;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float-slow,
+    .animate-float-slower {
+      animation: none;
+    }
+  }
+</style>

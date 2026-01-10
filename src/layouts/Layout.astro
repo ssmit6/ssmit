@@ -1,0 +1,163 @@
+---
+/**
+ * Layout Component
+ *
+ * Base layout wrapper for all pages with comprehensive SEO support.
+ * Includes Open Graph, Twitter Cards, and structured data.
+ */
+
+import { siteConfig } from '@lib/config';
+import '../styles/global.css';
+
+interface Props {
+  /** Page title - will be suffixed with site name */
+  title?: string;
+  /** Page description for SEO */
+  description?: string;
+  /** OG image path (relative to site root) */
+  image?: string;
+  /** Canonical URL override */
+  canonicalUrl?: string;
+  /** Page type for Open Graph */
+  type?: 'website' | 'article';
+  /** Disable title suffix */
+  rawTitle?: boolean;
+  /** Additional class for body */
+  bodyClass?: string;
+  /** Disable smooth scroll (for pages with custom scroll) */
+  noSmoothScroll?: boolean;
+}
+
+const {
+  title,
+  description = siteConfig.description,
+  image = siteConfig.ogImage,
+  canonicalUrl,
+  type = 'website',
+  rawTitle = false,
+  bodyClass = '',
+  noSmoothScroll = false,
+} = Astro.props;
+
+// Build full title
+const fullTitle = title
+  ? rawTitle
+    ? title
+    : `${title} — ${siteConfig.name}`
+  : `${siteConfig.name} — ${siteConfig.tagline}`;
+
+// Build absolute URLs
+const siteUrl = siteConfig.url;
+const currentPath = Astro.url.pathname;
+const canonical = canonicalUrl || `${siteUrl}${currentPath}`;
+const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
+// Structured data for organization
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteConfig.name,
+  url: siteUrl,
+  logo: `${siteUrl}/favicon.svg`,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: siteConfig.phone,
+    email: siteConfig.email,
+    contactType: 'customer service',
+  },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: siteConfig.address.street,
+    addressLocality: siteConfig.address.city,
+    addressRegion: siteConfig.address.state,
+    postalCode: siteConfig.address.zip,
+    addressCountry: siteConfig.address.country,
+  },
+};
+---
+
+<!DOCTYPE html>
+<html lang="en" class={noSmoothScroll ? '' : 'scroll-smooth'}>
+  <head>
+    <!-- Essential Meta -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- SEO Meta -->
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={siteConfig.name} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    {siteConfig.social.twitter && (
+      <meta name="twitter:site" content={`@${siteConfig.social.twitter}`} />
+    )}
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Theme -->
+    <meta name="theme-color" content={siteConfig.themeColor} />
+    <meta name="msapplication-TileColor" content={siteConfig.themeColor} />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Preload Critical Fonts -->
+    <link
+      rel="preload"
+      href="/fonts/GeneralSans-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Satoshi-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Preconnect to external domains (if needed) -->
+    <!-- <link rel="preconnect" href="https://api.example.com" /> -->
+
+    <!-- Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Additional head content via slot -->
+    <slot name="head" />
+  </head>
+
+  <body class:list={['antialiased', bodyClass]}>
+    <!-- Skip to main content link for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-lg focus:outline-none"
+    >
+      Skip to main content
+    </a>
+
+    <!-- Page content -->
+    <slot />
+
+    <!-- Main content marker for skip link -->
+    <div id="main-content" class="sr-only" aria-hidden="true"></div>
+  </body>
+</html>

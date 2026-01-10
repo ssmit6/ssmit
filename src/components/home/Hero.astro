@@ -1,0 +1,229 @@
+---
+/**
+ * Hero Section Component
+ *
+ * The main hero section for the homepage featuring:
+ * - Animated gradient blob background
+ * - Grid pattern overlay
+ * - Headline with text reveal animation
+ * - Phone mockup with parallax
+ * - CTA buttons with magnetic effect
+ *
+ * This is designed to be the first thing visitors see,
+ * so it prioritizes visual impact and clear messaging.
+ */
+
+import Container from '@components/ui/Container.astro';
+import Button from '@components/ui/Button.astro';
+import Badge from '@components/ui/Badge.astro';
+import FadeIn from '@components/animations/FadeIn';
+import TextReveal from '@components/animations/TextReveal';
+import MagneticButton from '@components/animations/MagneticButton';
+import GradientBlob from '@components/animations/GradientBlob';
+import PhoneMockup from '@components/ui/PhoneMockup';
+
+interface Props {
+  /** Badge text */
+  badge?: string;
+  /** Main headline (first line) */
+  headlineTop?: string;
+  /** Main headline (second line, gradient) */
+  headlineBottom?: string;
+  /** Subtext/description */
+  subtext?: string;
+  /** Primary CTA text */
+  primaryCta?: string;
+  /** Primary CTA link */
+  primaryCtaHref?: string;
+  /** Secondary CTA text */
+  secondaryCta?: string;
+  /** Secondary CTA link */
+  secondaryCtaHref?: string;
+  /** Phone mockup image */
+  phoneImage?: string;
+  /** Phone mockup alt text */
+  phoneAlt?: string;
+  /** Show scroll indicator */
+  showScrollIndicator?: boolean;
+}
+
+const {
+  badge = 'Introducing Cyclia',
+  headlineTop = 'We Build Apps',
+  headlineBottom = 'That People Love',
+  subtext = 'We craft thoughtful mobile experiences that solve real problems. Our debut app Cyclia is launching soon — join the waitlist to be first in line.',
+  primaryCta = 'Join the Waitlist',
+  primaryCtaHref = '#waitlist',
+  secondaryCta = 'Learn More',
+  secondaryCtaHref = '#products',
+  phoneImage = '',
+  phoneAlt = 'Cyclia app interface',
+  showScrollIndicator = true,
+} = Astro.props;
+---
+
+<section
+  class="relative min-h-screen flex items-center justify-center overflow-hidden"
+  aria-label="Hero"
+>
+  <!-- Background Layer -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <!-- Animated Gradient Blobs -->
+    <GradientBlob client:load />
+
+    <!-- Grid Pattern -->
+    <div
+      class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]"
+    />
+
+    <!-- Radial Fade Overlay -->
+    <div
+      class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-black)_70%)]"
+    />
+  </div>
+
+  <!-- Content -->
+  <Container size="wide" class="relative z-10 py-20 md:py-32">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Text Content -->
+      <div class="text-center lg:text-left order-2 lg:order-1">
+        <!-- Badge -->
+        <FadeIn client:visible delay={0}>
+          <Badge dot variant="accent" class="mb-6 md:mb-8">
+            {badge}
+          </Badge>
+        </FadeIn>
+
+        <!-- Headline -->
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-semibold tracking-tighter leading-[1.05] mb-6">
+          <TextReveal client:visible as="span" className="block">
+            {headlineTop}
+          </TextReveal>
+          <TextReveal client:visible as="span" delay={0.15} className="block">
+            <span class="text-gradient">{headlineBottom}</span>
+          </TextReveal>
+        </h1>
+
+        <!-- Subtext -->
+        <FadeIn client:visible delay={0.35}>
+          <p class="text-base sm:text-lg md:text-xl text-gray-400 max-w-xl mx-auto lg:mx-0 mb-8 md:mb-10 leading-relaxed">
+            {subtext}
+          </p>
+        </FadeIn>
+
+        <!-- CTA Buttons -->
+        <FadeIn client:visible delay={0.45}>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <!-- Primary CTA -->
+            <MagneticButton client:visible className="inline-block">
+              <Button href={primaryCtaHref} size="lg">
+                {primaryCta}
+                <svg
+                  slot="icon-right"
+                  class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-0.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Button>
+            </MagneticButton>
+
+            <!-- Secondary CTA -->
+            <MagneticButton client:visible className="inline-block" strength={0.2}>
+              <Button href={secondaryCtaHref} variant="outline" size="lg">
+                {secondaryCta}
+              </Button>
+            </MagneticButton>
+          </div>
+        </FadeIn>
+
+        <!-- Trust indicators (optional slot) -->
+        <div class="mt-10 md:mt-12">
+          <slot name="trust-indicators" />
+        </div>
+      </div>
+
+      <!-- Phone Mockup -->
+      <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+        <FadeIn client:visible delay={0.2} direction="right">
+          <PhoneMockup
+            client:visible
+            imageSrc={phoneImage}
+            alt={phoneAlt}
+            className="w-[260px] sm:w-[280px] md:w-[320px] lg:w-[340px]"
+          />
+        </FadeIn>
+      </div>
+    </div>
+  </Container>
+
+  <!-- Scroll Indicator -->
+  {showScrollIndicator && (
+    <div class="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10">
+      <FadeIn client:visible delay={0.8}>
+        <a
+          href="#products"
+          class="flex flex-col items-center gap-2 text-gray-500 hover:text-gray-300 transition-colors duration-fast group"
+          aria-label="Scroll to content"
+        >
+          <span class="text-xs uppercase tracking-widest font-medium">Scroll</span>
+          <div class="relative w-px h-8 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-b from-gray-500 to-transparent" />
+            <div class="absolute inset-0 bg-gradient-to-b from-accent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-fast" />
+          </div>
+        </a>
+      </FadeIn>
+    </div>
+  )}
+
+  <!-- Bottom Gradient Fade (for smooth transition to next section) -->
+  <div
+    class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none"
+    aria-hidden="true"
+  />
+</section>
+
+<style>
+  /* Ensure hero takes at least full viewport on mobile */
+  section {
+    min-height: 100svh; /* Use svh for mobile browser chrome */
+  }
+
+  /* Text gradient - ensure it works across browsers */
+  .text-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--color-accent-light) 0%,
+      var(--color-accent) 50%,
+      var(--color-accent-light) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Optional: animate gradient on hover/focus */
+  @media (prefers-reduced-motion: no-preference) {
+    h1:hover .text-gradient {
+      animation: shimmer 2s ease-in-out infinite;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+</style>

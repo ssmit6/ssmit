@@ -1,0 +1,347 @@
+---
+/**
+ * Header Component
+ *
+ * Fixed navigation header with:
+ * - Glassmorphism background with blur
+ * - Responsive navigation (desktop/mobile)
+ * - Scroll-aware styling (more opaque on scroll)
+ * - Accessible mobile menu with keyboard support
+ */
+
+import { siteConfig } from '@lib/config';
+
+interface Props {
+  /** Use transparent background initially (for hero sections) */
+  transparent?: boolean;
+}
+
+const { transparent = true } = Astro.props;
+
+const navLinks = [
+  { label: 'Products', href: '#products' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+
+<header
+  id="site-header"
+  class:list={[
+    'fixed top-0 left-0 right-0 z-50 transition-all duration-normal',
+    transparent ? 'header-transparent' : 'header-solid',
+  ]}
+  data-transparent={transparent}
+>
+  <!-- Background with blur -->
+  <div
+    class="header-bg absolute inset-0 transition-all duration-normal"
+    aria-hidden="true"
+  >
+    <div class="absolute inset-0 bg-black/0 backdrop-blur-none header-blur"></div>
+    <div class="absolute inset-x-0 bottom-0 h-px bg-white/0 header-border"></div>
+  </div>
+
+  <!-- Navigation Container -->
+  <nav
+    class="relative max-w-7xl mx-auto px-6 h-20 flex items-center justify-between"
+    aria-label="Main navigation"
+  >
+    <!-- Logo -->
+    <a
+      href="/"
+      class="relative z-10 text-xl font-display font-semibold tracking-tight hover:text-accent-light transition-colors duration-fast"
+      aria-label={`${siteConfig.name} - Home`}
+    >
+      {siteConfig.name}
+    </a>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-sm text-gray-400 hover:text-white transition-colors duration-fast"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <!-- Desktop CTA Button -->
+    <a
+      href="#waitlist"
+      class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-full hover:bg-gray-200 transition-all duration-fast group"
+    >
+      Join Waitlist
+      <svg
+        class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-0.5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 8l4 4m0 0l-4 4m4-4H3"
+        />
+      </svg>
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      type="button"
+      class="relative z-10 md:hidden p-2 -mr-2 text-gray-400 hover:text-white transition-colors duration-fast"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <!-- Hamburger Icon -->
+      <svg
+        class="menu-icon-open w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+      <!-- Close Icon -->
+      <svg
+        class="menu-icon-close w-6 h-6 hidden"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu Panel -->
+  <div
+    id="mobile-menu"
+    class="mobile-menu md:hidden fixed inset-0 top-20 bg-black/95 backdrop-blur-xl opacity-0 invisible transition-all duration-normal"
+    aria-hidden="true"
+  >
+    <nav
+      class="flex flex-col items-center justify-center h-full gap-8 pb-20"
+      aria-label="Mobile navigation"
+    >
+      {navLinks.map((link, index) => (
+        <a
+          href={link.href}
+          class="mobile-menu-link text-2xl font-display font-medium text-white hover:text-accent-light transition-colors duration-fast"
+          style={`--delay: ${index * 50}ms`}
+          tabindex="-1"
+        >
+          {link.label}
+        </a>
+      ))}
+
+      <!-- Mobile CTA -->
+      <a
+        href="#waitlist"
+        class="mobile-menu-link mt-4 inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transition-all duration-fast"
+        style={`--delay: ${navLinks.length * 50}ms`}
+        tabindex="-1"
+      >
+        Join Waitlist
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
+          />
+        </svg>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Header scroll states */
+  .header-transparent .header-blur {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+
+  .header-transparent .header-border {
+    background-color: rgba(255, 255, 255, 0);
+  }
+
+  .header-solid .header-blur,
+  .header-scrolled .header-blur {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .header-solid .header-border,
+  .header-scrolled .header-border {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Mobile menu open state */
+  .mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Mobile menu link animations */
+  .mobile-menu-link {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.2s ease;
+    transition-delay: var(--delay, 0ms);
+  }
+
+  .mobile-menu.is-open .mobile-menu-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu-link {
+      opacity: 1;
+      transform: none;
+      transition: color 0.2s ease;
+    }
+  }
+</style>
+
+<script>
+  // Header scroll behavior and mobile menu
+  function initHeader() {
+    const header = document.getElementById('site-header');
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIconOpen = menuButton?.querySelector('.menu-icon-open');
+    const menuIconClose = menuButton?.querySelector('.menu-icon-close');
+    const mobileLinks = mobileMenu?.querySelectorAll('.mobile-menu-link');
+
+    if (!header || !menuButton || !mobileMenu) return;
+
+    // Create non-null references for use in closures
+    const headerEl = header;
+    const menuBtn = menuButton;
+    const mobileMenuEl = mobileMenu;
+
+    const isTransparent = headerEl.dataset.transparent === 'true';
+    let isMenuOpen = false;
+
+    // Scroll handler
+    function handleScroll() {
+      const scrollY = window.scrollY;
+
+      if (isTransparent) {
+        if (scrollY > 50) {
+          headerEl.classList.add('header-scrolled');
+        } else {
+          headerEl.classList.remove('header-scrolled');
+        }
+      }
+    }
+
+    // Toggle mobile menu
+    function toggleMenu(open?: boolean) {
+      isMenuOpen = open ?? !isMenuOpen;
+
+      menuBtn.setAttribute('aria-expanded', String(isMenuOpen));
+      menuBtn.setAttribute('aria-label', isMenuOpen ? 'Close menu' : 'Open menu');
+      mobileMenuEl.setAttribute('aria-hidden', String(!isMenuOpen));
+
+      if (isMenuOpen) {
+        mobileMenuEl.classList.add('is-open');
+        menuIconOpen?.classList.add('hidden');
+        menuIconClose?.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // Make links focusable
+        mobileLinks?.forEach((link) => {
+          link.setAttribute('tabindex', '0');
+        });
+
+        // Focus first link after animation
+        setTimeout(() => {
+          (mobileLinks?.[0] as HTMLElement)?.focus();
+        }, 100);
+      } else {
+        mobileMenuEl.classList.remove('is-open');
+        menuIconOpen?.classList.remove('hidden');
+        menuIconClose?.classList.add('hidden');
+        document.body.style.overflow = '';
+
+        // Make links unfocusable
+        mobileLinks?.forEach((link) => {
+          link.setAttribute('tabindex', '-1');
+        });
+
+        // Return focus to menu button
+        menuBtn.focus();
+      }
+    }
+
+    // Close menu on link click
+    function handleLinkClick() {
+      if (isMenuOpen) {
+        toggleMenu(false);
+      }
+    }
+
+    // Keyboard handler
+    function handleKeydown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && isMenuOpen) {
+        toggleMenu(false);
+      }
+    }
+
+    // Event listeners
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    menuButton.addEventListener('click', () => toggleMenu());
+    document.addEventListener('keydown', handleKeydown);
+
+    mobileLinks?.forEach((link) => {
+      link.addEventListener('click', handleLinkClick);
+    });
+
+    // Initial scroll check
+    handleScroll();
+
+    // Cleanup on page navigation (for view transitions)
+    document.addEventListener('astro:before-preparation', () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('keydown', handleKeydown);
+    });
+  }
+
+  // Initialize on load and after view transitions
+  initHeader();
+  document.addEventListener('astro:after-swap', initHeader);
+</script>

@@ -1,0 +1,150 @@
+---
+/**
+ * Button Component
+ *
+ * Versatile button component supporting multiple variants,
+ * sizes, and can render as either <button> or <a>.
+ *
+ * Features:
+ * - Primary, secondary, outline, ghost variants
+ * - Small, medium, large sizes
+ * - Icon support (left/right slots)
+ * - Link mode (renders as <a>)
+ * - Loading state
+ * - Full accessibility support
+ */
+
+interface Props {
+  /** Button style variant */
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  /** Button size */
+  size?: 'sm' | 'md' | 'lg';
+  /** Render as link (uses <a> tag) */
+  href?: string;
+  /** Link target */
+  target?: '_blank' | '_self' | '_parent' | '_top';
+  /** Button type (when not a link) */
+  type?: 'button' | 'submit' | 'reset';
+  /** Disabled state */
+  disabled?: boolean;
+  /** Loading state */
+  loading?: boolean;
+  /** Full width button */
+  fullWidth?: boolean;
+  /** Additional CSS classes */
+  class?: string;
+  /** Icon only (square button) */
+  iconOnly?: boolean;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  target,
+  type = 'button',
+  disabled = false,
+  loading = false,
+  fullWidth = false,
+  class: className = '',
+  iconOnly = false,
+} = Astro.props;
+
+const isLink = !!href;
+const Tag = isLink ? 'a' : 'button';
+
+// Base classes
+const baseClasses = `
+  inline-flex items-center justify-center gap-2
+  font-medium rounded-full
+  transition-all duration-fast ease-out-quart
+  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black
+  disabled:opacity-50 disabled:pointer-events-none
+`;
+
+// Variant classes
+const variantClasses = {
+  primary: `
+    bg-white text-black
+    hover:bg-gray-200
+    active:scale-[0.98]
+  `,
+  secondary: `
+    bg-accent text-white
+    hover:bg-accent-light
+    active:scale-[0.98]
+  `,
+  outline: `
+    bg-transparent text-white
+    border border-white/20
+    hover:bg-white/5 hover:border-white/30
+    active:scale-[0.98]
+  `,
+  ghost: `
+    bg-transparent text-gray-400
+    hover:text-white hover:bg-white/5
+  `,
+};
+
+// Size classes
+const sizeClasses = {
+  sm: iconOnly ? 'w-9 h-9 text-sm' : 'px-4 py-2 text-sm',
+  md: iconOnly ? 'w-11 h-11 text-base' : 'px-6 py-3 text-sm',
+  lg: iconOnly ? 'w-14 h-14 text-lg' : 'px-8 py-4 text-base',
+};
+
+// Build final class list
+const classes = [
+  baseClasses,
+  variantClasses[variant],
+  sizeClasses[size],
+  fullWidth && 'w-full',
+  loading && 'relative text-transparent',
+  className,
+];
+---
+
+<Tag
+  class:list={classes}
+  href={isLink ? href : undefined}
+  target={isLink ? target : undefined}
+  rel={isLink && target === '_blank' ? 'noopener noreferrer' : undefined}
+  type={!isLink ? type : undefined}
+  disabled={!isLink && (disabled || loading)}
+  aria-disabled={disabled || loading}
+>
+  <!-- Left icon slot -->
+  <slot name="icon-left" />
+
+  <!-- Main content -->
+  <slot />
+
+  <!-- Right icon slot -->
+  <slot name="icon-right" />
+
+  <!-- Loading spinner -->
+  {loading && (
+    <span class="absolute inset-0 flex items-center justify-center">
+      <svg
+        class="w-5 h-5 animate-spin text-current"
+        fill="none"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        />
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        />
+      </svg>
+    </span>
+  )}
+</Tag>

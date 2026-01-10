@@ -1,0 +1,118 @@
+---
+/**
+ * Card Component
+ *
+ * Feature card with icon, title, and description.
+ * Includes hover effects with glow and gradient border.
+ *
+ * Features:
+ * - Icon slot or emoji prop
+ * - Title and description
+ * - Hover glow effect
+ * - Optional link functionality
+ */
+
+interface Props {
+  /** Card title */
+  title: string;
+  /** Card description */
+  description: string;
+  /** Icon emoji (alternative to icon slot) */
+  icon?: string;
+  /** Link URL (makes card clickable) */
+  href?: string;
+  /** Additional CSS classes */
+  class?: string;
+  /** Icon background gradient (from-to colors) */
+  iconGradient?: 'violet' | 'cyan' | 'orange' | 'green' | 'pink';
+}
+
+const {
+  title,
+  description,
+  icon,
+  href,
+  class: className = '',
+  iconGradient = 'violet',
+} = Astro.props;
+
+const Tag = href ? 'a' : 'div';
+
+// Icon gradient options
+const gradientClasses = {
+  violet: 'from-violet-500 to-indigo-500',
+  cyan: 'from-cyan-500 to-blue-500',
+  orange: 'from-orange-500 to-red-500',
+  green: 'from-green-500 to-emerald-500',
+  pink: 'from-pink-500 to-rose-500',
+};
+---
+
+<Tag
+  class:list={[
+    'group relative block p-8 rounded-3xl',
+    'bg-gradient-to-b from-white/5 to-transparent',
+    'border border-white/5',
+    'transition-all duration-slow',
+    href && 'cursor-pointer',
+    'hover:border-white/10',
+    className,
+  ]}
+  href={href}
+>
+  <!-- Hover Glow Effect -->
+  <div
+    class="absolute inset-0 rounded-3xl bg-gradient-to-b from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-slow pointer-events-none"
+    aria-hidden="true"
+  />
+
+  <div class="relative">
+    <!-- Icon -->
+    <div
+      class:list={[
+        'w-12 h-12 rounded-2xl flex items-center justify-center mb-6',
+        'bg-gradient-to-br',
+        gradientClasses[iconGradient],
+      ]}
+    >
+      {icon ? (
+        <span class="text-2xl">{icon}</span>
+      ) : (
+        <slot name="icon" />
+      )}
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-xl font-display font-semibold mb-3 group-hover:text-accent-light transition-colors duration-fast">
+      {title}
+    </h3>
+
+    <!-- Description -->
+    <p class="text-gray-400 leading-relaxed">
+      {description}
+    </p>
+
+    <!-- Optional footer slot -->
+    <slot name="footer" />
+  </div>
+
+  <!-- Arrow indicator for links -->
+  {href && (
+    <div class="absolute top-8 right-8 text-gray-600 group-hover:text-accent-light transition-colors duration-fast">
+      <svg
+        class="w-5 h-5 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-fast"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M7 17L17 7M17 7H7M17 7v10"
+        />
+      </svg>
+    </div>
+  )}
+</Tag>

@@ -13,7 +13,7 @@ export const siteConfig = {
     'We build thoughtful mobile experiences that people love. Creators of SignScan — the scanner that signs. Based in Sacramento, California.',
 
   // URLs
-  url: 'https://ssmit.com',
+  url: 'https://www.ssmit.app',
   ogImage: '/images/og-image.jpg',
 
   // Contact

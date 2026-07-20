@@ -1,0 +1,187 @@
+---
+/**
+ * Support / Contact page
+ *
+ * Contact channels + FAQ for SignScan. Uses native <details> accordions
+ * (no JS needed) styled to match the site's glass cards.
+ */
+
+import SubpageLayout from '@layouts/SubpageLayout.astro';
+import Container from '@components/ui/Container.astro';
+import FadeIn from '@components/animations/FadeIn';
+import { siteConfig } from '@lib/config';
+
+const email = siteConfig.email;
+const { priceOwn, priceMonthly } = siteConfig.app;
+
+const contactChannels = [
+  {
+    icon: '/icons/site/mail.svg',
+    title: 'Email support',
+    description: 'The fastest way to reach a human. We read everything and reply within 1–2 business days.',
+    ctaLabel: email,
+    href: `mailto:${email}?subject=SignScan%20support`,
+  },
+  {
+    icon: '/icons/site/chat.svg',
+    title: 'Feature ideas',
+    description: "Missing a tool you need? Tell us what paper is still making you do — it's how the catalog grows.",
+    ctaLabel: 'Suggest a feature',
+    href: `mailto:${email}?subject=SignScan%20feature%20idea`,
+  },
+  {
+    icon: '/icons/site/scale.svg',
+    title: 'Legal & privacy',
+    description: 'The fine print, in plain language: what we collect (almost nothing) and what you agree to.',
+    ctaLabel: 'Privacy · Terms',
+    href: '/privacy',
+  },
+];
+
+const faqs = [
+  {
+    q: 'How does SignScan pricing work?',
+    a: `Every tool can be tried for free. SignScan Pro unlocks unlimited use in two ways: a one-time purchase of ${priceOwn} that's yours forever, or a ${priceMonthly}/month subscription you can cancel anytime. Both are purchased through Apple, and both unlock the same thirty tools.`,
+  },
+  {
+    q: 'I bought Pro on my old iPhone. How do I get it back?',
+    a: 'Open SignScan, go to Settings, and tap Restore Purchases. As long as you\'re signed into the same Apple Account you bought with, your unlock comes back instantly. Subscriptions can also be managed in iOS Settings → Apple Account → Subscriptions.',
+  },
+  {
+    q: 'Where are my documents stored? Can you see them?',
+    a: 'Documents live only on your iPhone, in the app\'s private storage. Scanning, OCR, signing, translation — everything runs on-device. We operate no servers and cannot see your documents, ever. They\'re included in your normal iPhone backups if you have those enabled.',
+  },
+  {
+    q: 'How do I sign a document?',
+    a: 'Open any document, choose Sign, and draw your signature once — SignScan saves it. From then on, place it on any page, resize it with the corner handles, and export. The signature is burned into the PDF when you share it.',
+  },
+  {
+    q: 'Is a SignScan signature legally binding?',
+    a: 'Many everyday documents accept a drawn signature placed on a PDF, and electronic signatures are broadly recognized in the US and EU. SignScan is not a certified e-signature service, though — it doesn\'t provide identity verification or audit trails. For high-stakes agreements, check what your situation requires.',
+  },
+  {
+    q: 'What can I export, and where?',
+    a: 'Documents export as PDF anywhere iOS can share — Mail, Messages, AirDrop, Files, print. Individual tools add more: Export to Word produces an editable .docx, Extract Text gives you plain text, and Table and Receipt tools produce CSV spreadsheets.',
+  },
+  {
+    q: 'Does anything require an internet connection?',
+    a: 'No. All thirty tools — including translation — run entirely on-device. The only time SignScan touches the network is Apple\'s own purchase flow when you buy Pro.',
+  },
+  {
+    q: 'How do I get a refund?',
+    a: 'Purchases are processed by Apple, so refunds go through them: visit reportaproblem.apple.com, sign in, and request a refund for SignScan. Apple usually answers within a day or two.',
+  },
+  {
+    q: 'How do I delete my data?',
+    a: 'Delete a document in the app and it\'s gone from your device. Delete the app and everything it stored goes with it. We hold no copy — there\'s nothing on our side to delete unless you\'ve emailed us, in which case write to us and we\'ll erase the correspondence.',
+  },
+];
+
+// FAQPage structured data for search engines
+const faqStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<SubpageLayout
+  title="Support"
+  description="Get help with SignScan — contact support, browse the FAQ, or find our legal pages. A human reads every email."
+  badge="We're here to help"
+  subtitle="A human reads every email — usually within a business day."
+  illustration="/illustrations/support-hero.svg"
+  illustrationAlt=""
+>
+  <Fragment slot="full-width">
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(faqStructuredData)} />
+
+    <!-- Contact channels -->
+    <section class="relative py-14 md:py-20" aria-label="Contact options">
+      <Container size="wide">
+        <div class="grid md:grid-cols-3 gap-6">
+          {contactChannels.map((channel, index) => (
+            <FadeIn client:visible delay={0.05 + index * 0.07}>
+              <a
+                href={channel.href}
+                class="group flex flex-col h-full p-8 rounded-3xl bg-gradient-to-b from-white/5 to-transparent border border-white/5 hover:border-accent/30 hover:bg-white/[0.04] transition-all duration-fast"
+              >
+                <span class="w-12 h-12 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center mb-6">
+                  <img src={channel.icon} alt="" class="w-6 h-6" loading="lazy" aria-hidden="true" />
+                </span>
+                <h2 class="text-xl font-display font-semibold mb-2 group-hover:text-accent-light transition-colors duration-fast">
+                  {channel.title}
+                </h2>
+                <p class="text-gray-400 leading-relaxed mb-6 flex-1">{channel.description}</p>
+                <span class="inline-flex items-center gap-2 text-sm font-medium text-accent-light">
+                  {channel.ctaLabel}
+                  <svg class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </a>
+            </FadeIn>
+          ))}
+        </div>
+      </Container>
+    </section>
+
+    <!-- FAQ -->
+    <section class="relative pb-20 md:pb-28" aria-labelledby="faq-title">
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-accent/[0.05] rounded-full blur-[150px]"></div>
+      </div>
+
+      <Container size="default" class="relative">
+        <div class="max-w-3xl mx-auto">
+          <FadeIn client:visible>
+            <h2 id="faq-title" class="h2 text-center mb-10 md:mb-14">Frequently asked questions</h2>
+          </FadeIn>
+
+          <div class="space-y-3">
+            {faqs.map((faq, index) => (
+              <FadeIn client:visible delay={0.03 * index}>
+                <details class="faq-item group rounded-2xl bg-white/[0.02] border border-white/5 open:border-accent/25 open:bg-white/[0.04] transition-all duration-fast">
+                  <summary class="flex items-center justify-between gap-4 cursor-pointer list-none p-5 md:p-6 text-white font-medium">
+                    <span>{faq.q}</span>
+                    <svg
+                      class="faq-chevron w-5 h-5 shrink-0 text-gray-500 transition-transform duration-fast"
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <p class="px-5 md:px-6 pb-5 md:pb-6 text-gray-400 leading-relaxed">{faq.a}</p>
+                </details>
+              </FadeIn>
+            ))}
+          </div>
+
+          <!-- Bottom nudge -->
+          <FadeIn client:visible delay={0.2}>
+            <p class="text-center text-gray-500 mt-12">
+              Didn't find it?
+              <a href={`mailto:${email}?subject=SignScan%20support`} class="text-accent-light hover:underline">Email us</a>
+              — a real person answers.
+            </p>
+          </FadeIn>
+        </div>
+      </Container>
+    </section>
+  </Fragment>
+</SubpageLayout>
+
+<style>
+  /* Rotate chevron when the accordion is open; hide default marker */
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+</style>

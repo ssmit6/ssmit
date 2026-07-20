@@ -22,10 +22,10 @@
   --color-black: #0a0a0b;
   --color-white: #fafafa;
 
-  /* Colors — Accent (Electric Violet) */
-  --color-accent: #7c3aed;
-  --color-accent-light: #a78bfa;
-  --color-accent-glow: rgba(124, 58, 237, 0.4);
+  /* Colors — Accent (SignScan Cobalt) */
+  --color-accent: #2563EB;
+  --color-accent-light: #60A5FA;
+  --color-accent-glow: rgba(37, 99, 235, 0.4);
 
   /* Colors — Neutrals */
   --color-gray-50: #f9fafb;

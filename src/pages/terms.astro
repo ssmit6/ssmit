@@ -1,0 +1,191 @@
+---
+/**
+ * Terms of Use
+ *
+ * Covers the SignScan iOS app and the ssmit.com website.
+ * Reflects the app's actual pricing model: one-time lifetime unlock or a
+ * monthly subscription, both sold through Apple.
+ */
+
+import SubpageLayout from '@layouts/SubpageLayout.astro';
+import { siteConfig } from '@lib/config';
+
+const email = siteConfig.email;
+const { priceOwn, priceMonthly } = siteConfig.app;
+---
+
+<SubpageLayout
+  title="Terms of Use"
+  description="The terms that govern your use of the SignScan app and ssmit.com — license, purchases, your content, and our responsibilities."
+  badge="Legal"
+  subtitle="Effective July 19, 2026 · Applies to the SignScan app and ssmit.com"
+  illustration="/illustrations/terms-hero.svg"
+  illustrationAlt=""
+>
+  <div class="callout">
+    <p>
+      <strong>The short version:</strong> SignScan is yours to use for
+      anything lawful. Your documents are yours — we claim no rights to them.
+      Buy once and the unlock is permanent on your Apple Account; subscribe
+      and you can cancel anytime through Apple. The app places your drawn
+      signature on documents, but it is not a certified e-signature service —
+      for high-stakes agreements, check what your situation requires.
+    </p>
+  </div>
+
+  <h2>1. Agreement to these terms</h2>
+  <p>
+    These Terms of Use are an agreement between you and SSMIT ("we", "us"),
+    a software studio based in Sacramento, California. They govern your use
+    of the <strong>SignScan</strong> iOS application and the ssmit.com
+    website (together, the "Services"). By downloading or using the
+    Services, you agree to these terms. If you don't agree, don't use the
+    Services.
+  </p>
+  <p>
+    Where you obtained SignScan through Apple's App Store, Apple's standard
+    <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener noreferrer">Licensed Application End User License Agreement</a>
+    also applies; if it conflicts with these terms, these terms control to
+    the extent permitted.
+  </p>
+
+  <h2>2. Your license to SignScan</h2>
+  <p>
+    We grant you a personal, non-exclusive, non-transferable license to use
+    SignScan on Apple devices you own or control, as permitted by the App
+    Store usage rules. You may not copy, modify, distribute, sell, or lease
+    any part of the app, and you may not reverse-engineer it except to the
+    extent the law permits despite this restriction.
+  </p>
+
+  <h2>3. Purchases, subscriptions, and refunds</h2>
+  <p>SignScan's paid tier ("SignScan Pro") is sold through Apple in two forms:</p>
+  <ul>
+    <li>
+      <strong>One-time purchase ({priceOwn}).</strong> A single payment
+      permanently unlocks every Pro tool on your Apple Account. It is a
+      lifetime license to the software as shipped, not a promise of future
+      services.
+    </li>
+    <li>
+      <strong>Monthly subscription ({priceMonthly}/month).</strong>
+      Auto-renews monthly through your Apple Account until cancelled.
+      Cancel anytime in iOS Settings → Apple Account → Subscriptions, at
+      least 24 hours before the current period ends to avoid renewal.
+    </li>
+  </ul>
+  <p>
+    Payment is charged to your Apple Account at confirmation of purchase.
+    Prices may vary by region and may change for new purchases; a change
+    will never take away a lifetime unlock you already own. Use
+    <em>Restore Purchases</em> in the app to recover your unlock on a new
+    device. Refunds are handled by Apple under App Store policies — request
+    one at <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener noreferrer">reportaproblem.apple.com</a>.
+  </p>
+
+  <h2>4. Your content</h2>
+  <p>
+    Documents you scan, import, sign, or edit are yours. We claim no
+    ownership of and no license to your content. Because processing happens
+    on your device, we never receive it (see the
+    <a href="/privacy">Privacy Policy</a>). You are responsible for the
+    content you capture and what you do with it — including having the right
+    to scan it in the first place.
+  </p>
+
+  <h2>5. Signatures — what SignScan is and isn't</h2>
+  <p>
+    SignScan lets you draw a signature and place it on a document, producing
+    a signed PDF. Many everyday agreements accept exactly this. However:
+  </p>
+  <ul>
+    <li>
+      SignScan is <strong>not</strong> a certified or "qualified" electronic
+      signature service and does not provide identity verification, audit
+      trails, or cryptographic signing certificates.
+    </li>
+    <li>
+      Whether an electronically signed document is valid for a particular
+      purpose depends on the laws and requirements that apply to that
+      document. That judgment — and any legal advice about it — is your
+      responsibility, not ours.
+    </li>
+  </ul>
+
+  <h2>6. Acceptable use</h2>
+  <p>You agree not to use the Services to:</p>
+  <ul>
+    <li>violate any law, or scan, alter, or sign documents to deceive or defraud;</li>
+    <li>sign another person's name or forge any signature, seal, or stamp;</li>
+    <li>fabricate or alter identity documents, currency, or official records;</li>
+    <li>infringe anyone's intellectual property or privacy rights.</li>
+  </ul>
+
+  <h2>7. Accuracy of automated tools</h2>
+  <p>
+    Text recognition, handwriting reading, translation, table and receipt
+    extraction, and similar features are automated and can make mistakes.
+    They are provided as conveniences, not certified results — review
+    anything important before you rely on it. Redaction and blur permanently
+    modify the output copy; keep the original if you need it.
+  </p>
+
+  <h2>8. Our intellectual property</h2>
+  <p>
+    The Services — including the app's code, design, illustrations, icons,
+    and the SignScan and SSMIT names — are owned by or licensed to us and
+    are protected by intellectual-property laws. These terms give you no
+    right to use our branding.
+  </p>
+
+  <h2>9. Disclaimer of warranties</h2>
+  <p>
+    The Services are provided <strong>"as is" and "as available"</strong>,
+    without warranties of any kind, express or implied, including
+    merchantability, fitness for a particular purpose, and non-infringement.
+    We do not warrant that the Services will be uninterrupted or error-free.
+    Some jurisdictions don't allow certain warranty exclusions, so parts of
+    this section may not apply to you.
+  </p>
+
+  <h2>10. Limitation of liability</h2>
+  <p>
+    To the maximum extent permitted by law, SSMIT will not be liable for any
+    indirect, incidental, special, consequential, or punitive damages, or
+    for lost profits, data, or goodwill, arising from your use of the
+    Services. Our total liability for any claim relating to the Services is
+    limited to the amount you paid us for SignScan in the twelve months
+    before the claim arose.
+  </p>
+
+  <h2>11. Termination</h2>
+  <p>
+    You can stop using the Services at any time by deleting the app. We may
+    suspend or terminate access to the Services for a violation of these
+    terms. Sections that by their nature should survive (your content,
+    disclaimers, limitation of liability, governing law) survive
+    termination.
+  </p>
+
+  <h2>12. Changes to these terms</h2>
+  <p>
+    We may update these terms from time to time; the current version always
+    lives at this page with its effective date. Material changes will be
+    noted in the app's release notes. Continuing to use the Services after a
+    change means you accept the updated terms.
+  </p>
+
+  <h2>13. Governing law</h2>
+  <p>
+    These terms are governed by the laws of the State of California, without
+    regard to conflict-of-law rules. Any dispute will be resolved in the
+    state or federal courts located in Sacramento County, California, and
+    you consent to their jurisdiction.
+  </p>
+
+  <h2>14. Contact</h2>
+  <p>
+    SSMIT · Sacramento, California, USA<br />
+    <a href={`mailto:${email}`}>{email}</a>
+  </p>
+</SubpageLayout>

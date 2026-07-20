@@ -38,7 +38,7 @@ interface GradientBlobProps {
 
 const defaultBlobs: BlobConfig[] = [
   {
-    color: 'linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(99, 102, 241, 0.3))',
+    color: 'linear-gradient(135deg, rgba(37, 99, 235, 0.4), rgba(96, 165, 250, 0.3))',
     size: 600,
     position: { x: 25, y: 25 },
     speed: 1,

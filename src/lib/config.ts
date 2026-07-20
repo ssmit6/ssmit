@@ -10,7 +10,7 @@ export const siteConfig = {
   name: 'SSMIT',
   tagline: 'Crafting Digital Experiences That Matter',
   description:
-    'We build thoughtful mobile experiences that people love. Creators of Cyclia. Based in Sacramento, California.',
+    'We build thoughtful mobile experiences that people love. Creators of SignScan — the scanner that signs. Based in Sacramento, California.',
 
   // URLs
   url: 'https://ssmit.com',
@@ -36,8 +36,17 @@ export const siteConfig = {
   },
 
   // Theme
-  themeColor: '#7c3aed', // Accent violet
+  themeColor: '#2563EB', // SignScan cobalt
   backgroundColor: '#0a0a0b', // Primary black
+
+  // Flagship app
+  app: {
+    name: 'SignScan',
+    tagline: 'Scan anything. Sign everything.',
+    supportEmail: 'smit@ssmit.com',
+    priceOwn: '$34.99',
+    priceMonthly: '$4.99',
+  },
 } as const;
 
 export type SiteConfig = typeof siteConfig;

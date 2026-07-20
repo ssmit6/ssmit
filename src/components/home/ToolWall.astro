@@ -1,0 +1,192 @@
+---
+/**
+ * ToolWall Component
+ *
+ * The full SignScan tool catalog — all 30 tools, grouped by the app's five
+ * real categories, wearing the app's own licensed icons and category hues.
+ * Mirrors the in-app Tools screen so the site and product read as one object.
+ */
+
+import Container from '@components/ui/Container.astro';
+import Badge from '@components/ui/Badge.astro';
+import FadeIn from '@components/animations/FadeIn';
+
+interface Tool {
+  icon: string;
+  title: string;
+  subtitle: string;
+}
+
+interface Category {
+  title: string;
+  key: 'capture' | 'extract' | 'sign' | 'organize' | 'protect';
+  tools: Tool[];
+}
+
+// Verbatim from the app's ToolCatalog manifest — titles, subtitles, and order.
+const categories: Category[] = [
+  {
+    title: 'Capture',
+    key: 'capture',
+    tools: [
+      { icon: 'scan', title: 'Scan', subtitle: 'Turn paper into a crisp PDF' },
+      { icon: 'scanID', title: 'ID & Passport', subtitle: 'Both sides on one true-size page' },
+      { icon: 'importDocs', title: 'Import', subtitle: 'Bring in a PDF or photos' },
+    ],
+  },
+  {
+    title: 'Extract & convert',
+    key: 'extract',
+    tools: [
+      { icon: 'recognizeText', title: 'Recognize Text', subtitle: 'Make a scan searchable' },
+      { icon: 'handwriting', title: 'Handwriting', subtitle: 'Read neat handwriting into text' },
+      { icon: 'extractText', title: 'Extract Text', subtitle: 'Pull the plain text out' },
+      { icon: 'word', title: 'Export to Word', subtitle: 'Save as an editable Word file' },
+      { icon: 'table', title: 'Table to Spreadsheet', subtitle: 'Rebuild rows and columns to CSV' },
+      { icon: 'receipt', title: 'Receipt to CSV', subtitle: 'Vendor, tax and total to a spreadsheet' },
+      { icon: 'businessCard', title: 'Business Card', subtitle: 'Snap a card into Contacts' },
+      { icon: 'translate', title: 'Translate', subtitle: 'Translate on-device, fully offline' },
+    ],
+  },
+  {
+    title: 'Sign & fill',
+    key: 'sign',
+    tools: [
+      { icon: 'sign', title: 'Sign', subtitle: 'Draw once, sign anything' },
+      { icon: 'fillForm', title: 'Fill Form', subtitle: 'Fill fields, or drop in your info' },
+      { icon: 'text', title: 'Text', subtitle: 'Type anywhere on the page' },
+      { icon: 'date', title: 'Date', subtitle: "Stamp today's date" },
+      { icon: 'checkmark', title: 'Check', subtitle: 'Drop a checkmark' },
+      { icon: 'cross', title: 'Cross', subtitle: 'Drop a cross' },
+      { icon: 'shapes', title: 'Shapes', subtitle: 'Box, circle, or point with an arrow' },
+      { icon: 'image', title: 'Add Image', subtitle: 'Drop a logo, letterhead, or photo' },
+      { icon: 'markup', title: 'Mark Up', subtitle: 'Draw freehand with a pen or highlighter' },
+    ],
+  },
+  {
+    title: 'Organize pages',
+    key: 'organize',
+    tools: [
+      { icon: 'pages', title: 'Manage Pages', subtitle: 'Reorder, rotate, and delete pages' },
+      { icon: 'merge', title: 'Merge', subtitle: 'Combine documents into one' },
+      { icon: 'split', title: 'Split', subtitle: 'Break one PDF into several' },
+    ],
+  },
+  {
+    title: 'Protect & output',
+    key: 'protect',
+    tools: [
+      { icon: 'redact', title: 'Redact', subtitle: 'Black out private info for good' },
+      { icon: 'blur', title: 'Blur', subtitle: 'Pixelate a face or logo for good' },
+      { icon: 'numbering', title: 'Numbering & Bates', subtitle: 'Stamp page numbers or a Bates label' },
+      { icon: 'headerFooter', title: 'Header & Footer', subtitle: 'Repeat a label in the margin' },
+      { icon: 'watermark', title: 'Watermark', subtitle: 'Tile CONFIDENTIAL or DRAFT across the page' },
+      { icon: 'compress', title: 'Compress', subtitle: 'Shrink to an email-able size' },
+      { icon: 'print', title: 'Print', subtitle: 'Send straight to a printer' },
+    ],
+  },
+];
+
+// Per-category tint classes (Tailwind needs literal class names to keep them)
+const tint = {
+  capture: {
+    dot: 'bg-tile-capture',
+    chip: 'bg-tile-capture/15 border-tile-capture/25',
+    hover: 'hover:border-tile-capture/40',
+  },
+  extract: {
+    dot: 'bg-tile-extract',
+    chip: 'bg-tile-extract/15 border-tile-extract/25',
+    hover: 'hover:border-tile-extract/40',
+  },
+  sign: {
+    dot: 'bg-tile-sign',
+    chip: 'bg-tile-sign/15 border-tile-sign/25',
+    hover: 'hover:border-tile-sign/40',
+  },
+  organize: {
+    dot: 'bg-tile-organize',
+    chip: 'bg-tile-organize/15 border-tile-organize/25',
+    hover: 'hover:border-tile-organize/40',
+  },
+  protect: {
+    dot: 'bg-tile-protect',
+    chip: 'bg-tile-protect/15 border-tile-protect/25',
+    hover: 'hover:border-tile-protect/40',
+  },
+};
+
+const toolCount = categories.reduce((n, c) => n + c.tools.length, 0);
+---
+
+<section id="tools" class="section relative overflow-hidden" aria-labelledby="toolwall-title">
+  <!-- Background wash -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-accent/[0.06] rounded-full blur-[160px]"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+  </div>
+
+  <Container size="wide" class="relative">
+    <!-- Header -->
+    <div class="text-center mb-14 lg:mb-20">
+      <FadeIn client:visible>
+        <Badge variant="accent" class="mb-4">{toolCount} tools · all on-device</Badge>
+      </FadeIn>
+
+      <FadeIn client:visible delay={0.05}>
+        <h2 id="toolwall-title" class="h2 mb-4">Every tool paper ever needed</h2>
+      </FadeIn>
+
+      <FadeIn client:visible delay={0.1}>
+        <p class="lead max-w-2xl mx-auto">
+          The whole catalog ships in the app — nothing rented out to a server,
+          nothing waiting on a connection. This is it, tool for tool.
+        </p>
+      </FadeIn>
+    </div>
+
+    <!-- Category groups -->
+    <div class="space-y-10 lg:space-y-12">
+      {categories.map((category, catIndex) => (
+        <FadeIn client:visible delay={0.1 + catIndex * 0.06}>
+          <div>
+            <!-- Category label -->
+            <div class="flex items-center gap-2.5 mb-4">
+              <span class:list={['w-2 h-2 rounded-full', tint[category.key].dot]} aria-hidden="true"></span>
+              <h3 class="text-lg font-display font-semibold text-white">{category.title}</h3>
+              <span class="text-sm text-gray-600">{category.tools.length}</span>
+            </div>
+
+            <!-- Tool tiles -->
+            <ul class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3" role="list">
+              {category.tools.map((tool) => (
+                <li
+                  class:list={[
+                    'group flex items-center gap-3 p-3 rounded-2xl',
+                    'bg-white/[0.02] border border-white/5 transition-all duration-fast',
+                    'hover:bg-white/[0.05] hover:-translate-y-0.5',
+                    tint[category.key].hover,
+                  ]}
+                  title={tool.subtitle}
+                >
+                  <span
+                    class:list={[
+                      'w-10 h-10 rounded-xl border flex items-center justify-center shrink-0',
+                      tint[category.key].chip,
+                    ]}
+                  >
+                    <img src={`/icons/tools/${tool.icon}.svg`} alt="" class="w-5 h-5" loading="lazy" aria-hidden="true" />
+                  </span>
+                  <span class="min-w-0">
+                    <span class="block text-sm font-medium text-white truncate">{tool.title}</span>
+                    <span class="block text-xs text-gray-500 truncate">{tool.subtitle}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </FadeIn>
+      ))}
+    </div>
+  </Container>
+</section>

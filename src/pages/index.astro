@@ -4,8 +4,9 @@
  *
  * Main landing page featuring:
  * - Hero section with animated elements
- * - Product showcase for Cyclia
- * - Features grid
+ * - Product showcase for SignScan (flagship)
+ * - ToolWall — the full 30-tool catalog with the app's licensed icons
+ * - Features grid (why SignScan)
  * - Coming soon section (AI Photo Editor)
  * - About section
  * - CTA section
@@ -17,6 +18,7 @@ import Header from '@components/common/Header.astro';
 import Footer from '@components/common/Footer.astro';
 import Hero from '@components/home/Hero.astro';
 import ProductShowcase from '@components/home/ProductShowcase.astro';
+import ToolWall from '@components/home/ToolWall.astro';
 import Features from '@components/home/Features.astro';
 import ComingSoon from '@components/home/ComingSoon.astro';
 import About from '@components/home/About.astro';
@@ -30,96 +32,100 @@ import SmoothScroll from '@components/animations/SmoothScroll';
 
     <!-- Hero Section -->
     <Hero
-      badge="Introducing Cyclia"
-      headlineTop="We Build Apps"
-      headlineBottom="That People Love"
-      subtext="We craft thoughtful mobile experiences that solve real problems. Our debut app Cyclia is launching soon — join the waitlist to be first in line."
-      primaryCta="Join the Waitlist"
+      badge="Introducing SignScan"
+      headlineTop="Scan Anything."
+      headlineBottom="Sign Everything."
+      subtext="SignScan turns paper into signed, sealed, delivered — scan it, sign it, send it, all on your iPhone. Thirty professional document tools, every one of them running entirely on your device."
+      primaryCta="Get SignScan"
       primaryCtaHref="#waitlist"
-      secondaryCta="Learn More"
+      secondaryCta="See the App"
       secondaryCtaHref="#products"
-      phoneImage="/cyclia-screenshot.png"
-      phoneAlt="Cyclia app interface preview"
+      phoneImage="/signscan-home.jpg"
+      phoneAlt="SignScan Home screen with quick tools and recent documents"
     />
 
-    <!-- Product Showcase: Cyclia -->
+    <!-- Product Showcase: SignScan -->
     <ProductShowcase
       id="products"
       badge="Our Flagship Product"
-      productName="Cyclia"
-      tagline="Your Daily Companion for Mindful Living"
-      description="Cyclia helps you build better habits, track your progress, and stay focused on what matters most. Designed with intention, built for your life."
+      productName="SignScan"
+      tagline="The scanner that signs"
+      description="Most scanner apps stop at the PDF. SignScan is where the real work happens — sign the lease, fill the form, redact the account number, pull the receipt into a spreadsheet. Paper goes in; finished business comes out."
       features={[
         {
-          icon: '📊',
-          title: 'Smart Insights',
-          description: 'Understand your patterns with beautiful analytics that actually make sense.',
+          icon: '/icons/tools/sign.svg',
+          title: 'A Signature That Feels Real',
+          description: 'Draw your signature once, then place it on anything — with ink that sits on the page like it was always there.',
         },
         {
-          icon: '🎯',
-          title: 'Goal Tracking',
-          description: 'Set meaningful goals and watch your progress unfold day by day.',
+          icon: '/icons/tools/recognizeText.svg',
+          title: 'Reads Everything',
+          description: 'Searchable scans, extracted text, tables to spreadsheets, receipts to CSV — even neat handwriting.',
         },
         {
-          icon: '🔔',
-          title: 'Gentle Reminders',
-          description: 'Stay on track with notifications that respect your time and attention.',
+          icon: '/icons/tools/redact.svg',
+          title: 'True Redaction',
+          description: 'Redact and blur actually remove the pixels. What you black out can never be copied back out.',
         },
         {
-          icon: '🔒',
-          title: 'Privacy First',
-          description: 'Your data stays on your device. No accounts required, no tracking.',
+          icon: '/icons/site/lock.svg',
+          title: 'Nothing Leaves Your Phone',
+          description: 'Scanning, OCR, even translation run entirely on-device. No account, no cloud, no tracking.',
         },
       ]}
-      ctaText="Join the Waitlist"
+      ctaText="Get SignScan"
       ctaHref="#waitlist"
-      secondaryCtaText=""
-      phoneImage="/cyclia-screenshot.png"
-      phoneAlt="Cyclia app dashboard"
+      secondaryCtaText="Browse the Tools"
+      secondaryCtaHref="#tools"
+      phoneImage="/signscan-tools.jpg"
+      phoneAlt="SignScan Tools catalog — 30 tools, all on-device"
     />
 
-    <!-- Features Grid -->
+    <!-- Tool Wall: the full 30-tool catalog -->
+    <ToolWall />
+
+    <!-- Features Grid: why SignScan -->
     <Features
       id="features"
-      badge="Features"
-      title="Everything You Need"
-      subtitle="Powerful features designed with simplicity in mind. No learning curve, just results."
+      badge="Why SignScan"
+      title="Built Like a Tool, Priced Like One"
+      subtitle="No accounts. No cloud. No subscription treadmill — unless you want one."
       features={[
         {
-          icon: '⚡',
-          title: 'Lightning Fast',
-          description: 'Optimized performance with instant load times and smooth 60fps animations throughout.',
-          iconGradient: 'orange',
+          icon: '/icons/site/crown.svg',
+          title: 'Pay Once, Own It',
+          description: 'One purchase owns every tool, forever — $34.99, done. Prefer to rent? $4.99 a month, cancel anytime.',
+          iconGradient: 'sign',
         },
         {
-          icon: '🎨',
-          title: 'Beautiful Design',
-          description: 'Crafted with meticulous attention to detail. Every pixel has a purpose.',
-          iconGradient: 'pink',
+          icon: '/icons/site/lock.svg',
+          title: 'Private by Design',
+          description: 'Your documents never leave your iPhone. Every tool — OCR, translation, redaction — runs on-device.',
+          iconGradient: 'capture',
         },
         {
-          icon: '📱',
-          title: 'Cross Platform',
-          description: 'Works seamlessly on iOS, Android, and web. One experience, everywhere.',
-          iconGradient: 'violet',
+          icon: '/icons/tools/scanID.svg',
+          title: 'ID & Passport Mode',
+          description: 'Both sides of a card on one true-size page. Print it at 100% and it matches the original, ruler-verified.',
+          iconGradient: 'extract',
         },
         {
-          icon: '🔄',
-          title: 'Real-time Sync',
-          description: 'Your data syncs instantly across all your devices. Always up to date.',
-          iconGradient: 'cyan',
+          icon: '/icons/tools/translate.svg',
+          title: 'Offline Translation',
+          description: 'Translate a scanned document with Apple’s on-device engine — in airplane mode, if you like.',
+          iconGradient: 'organize',
         },
         {
-          icon: '🌙',
-          title: 'Dark Mode',
-          description: 'Easy on the eyes with a carefully crafted dark theme. Day or night.',
-          iconGradient: 'violet',
+          icon: '/icons/tools/watermark.svg',
+          title: 'Paper-Grade Output',
+          description: 'Watermarks, Bates numbering, headers and footers — vector-crisp stamps that survive print and export.',
+          iconGradient: 'protect',
         },
         {
-          icon: '♿',
-          title: 'Accessible',
-          description: 'Built for everyone. Full keyboard navigation and screen reader support.',
-          iconGradient: 'green',
+          icon: '/icons/site/magic.svg',
+          title: 'Crafted, Not Assembled',
+          description: 'A custom camera, a letterpress design language, and licensed illustration throughout. It feels like one object.',
+          iconGradient: 'capture',
         },
       ]}
       columns={3}
@@ -129,7 +135,7 @@ import SmoothScroll from '@components/animations/SmoothScroll';
     <!-- Coming Soon: AI Photo Editor -->
     <ComingSoon
       id="ai-photo-editor"
-      badge="Coming 2025"
+      badge="In the Lab"
       title="AI Photo Editor"
       description="Professional-grade photo editing powered by cutting-edge AI. Transform your selfies and portraits with a single tap."
       emailPlaceholder="Enter your email"
@@ -140,10 +146,16 @@ import SmoothScroll from '@components/animations/SmoothScroll';
     />
 
     <!-- About Section -->
-    <About />
+    <About
+      closingStatement="SignScan is our flagship. It won't be our last."
+    />
 
     <!-- CTA Section -->
-    <CTA />
+    <CTA
+      headline="Be First in Line"
+      description="SignScan is putting the finishing touches on its App Store debut. Leave your email and we'll tell you the moment it lands — nothing else, ever."
+      buttonText="Notify Me"
+    />
 
     <!-- Footer -->
     <Footer />

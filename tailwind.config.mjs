@@ -8,11 +8,21 @@ export default {
         black: '#0a0a0b',
         white: '#fafafa',
 
-        // Accent - Electric Violet (Modern/Tech)
+        // Accent - SignScan Cobalt ("Cool & crisp")
         accent: {
-          DEFAULT: '#7c3aed',
-          light: '#a78bfa',
-          glow: 'rgba(124, 58, 237, 0.4)',
+          DEFAULT: '#2563EB',
+          light: '#60A5FA',
+          dark: '#1D4ED8',
+          glow: 'rgba(37, 99, 235, 0.4)',
+        },
+
+        // App tool-category hues (mirrors SignScan's tile colors, dark variants)
+        tile: {
+          capture: '#5B8CF5',
+          extract: '#22BCC0',
+          sign: '#FF8759',
+          organize: '#9E7BFF',
+          protect: '#FF6178',
         },
 
         // Neutrals (overriding Tailwind grays for consistency)

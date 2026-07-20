@@ -17,14 +17,14 @@ interface Props {
   title: string;
   /** Card description */
   description: string;
-  /** Icon emoji (alternative to icon slot) */
+  /** Icon emoji, or a path to an SVG (rendered as an image) */
   icon?: string;
   /** Link URL (makes card clickable) */
   href?: string;
   /** Additional CSS classes */
   class?: string;
   /** Icon background gradient (from-to colors) */
-  iconGradient?: 'violet' | 'cyan' | 'orange' | 'green' | 'pink';
+  iconGradient?: 'violet' | 'cyan' | 'orange' | 'green' | 'pink' | 'capture' | 'extract' | 'sign' | 'organize' | 'protect';
 }
 
 const {
@@ -37,14 +37,20 @@ const {
 } = Astro.props;
 
 const Tag = href ? 'a' : 'div';
+const isSvgIcon = !!icon && icon.endsWith('.svg');
 
-// Icon gradient options
+// Icon gradient options — the last five mirror SignScan's tool-category tiles
 const gradientClasses = {
   violet: 'from-violet-500 to-indigo-500',
   cyan: 'from-cyan-500 to-blue-500',
   orange: 'from-orange-500 to-red-500',
   green: 'from-green-500 to-emerald-500',
   pink: 'from-pink-500 to-rose-500',
+  capture: 'from-tile-capture/25 to-tile-capture/10 border border-tile-capture/30',
+  extract: 'from-tile-extract/25 to-tile-extract/10 border border-tile-extract/30',
+  sign: 'from-tile-sign/25 to-tile-sign/10 border border-tile-sign/30',
+  organize: 'from-tile-organize/25 to-tile-organize/10 border border-tile-organize/30',
+  protect: 'from-tile-protect/25 to-tile-protect/10 border border-tile-protect/30',
 };
 ---
 
@@ -76,7 +82,11 @@ const gradientClasses = {
       ]}
     >
       {icon ? (
-        <span class="text-2xl">{icon}</span>
+        isSvgIcon ? (
+          <img src={icon} alt="" class="w-6 h-6" loading="lazy" aria-hidden="true" />
+        ) : (
+          <span class="text-2xl">{icon}</span>
+        )
       ) : (
         <slot name="icon" />
       )}

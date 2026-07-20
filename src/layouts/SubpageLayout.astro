@@ -1,0 +1,126 @@
+---
+/**
+ * SubpageLayout
+ *
+ * Shared shell for interior pages (legal, support). Solid header, a hero band
+ * with a licensed illustration, and a constrained content column. Legal pages
+ * drop prose into the default slot; richer pages (support) can use the
+ * `full-width` slot instead.
+ */
+
+import Layout from '@layouts/Layout.astro';
+import Header from '@components/common/Header.astro';
+import Footer from '@components/common/Footer.astro';
+import Container from '@components/ui/Container.astro';
+import Badge from '@components/ui/Badge.astro';
+import FadeIn from '@components/animations/FadeIn';
+
+interface Props {
+  /** Page + hero title */
+  title: string;
+  /** SEO description */
+  description: string;
+  /** Small badge above the title */
+  badge?: string;
+  /** Sub-line under the title (e.g. effective date) */
+  subtitle?: string;
+  /** Illustration path (from /public), shown beside the hero text */
+  illustration?: string;
+  /** Illustration alt text */
+  illustrationAlt?: string;
+}
+
+const {
+  title,
+  description,
+  badge,
+  subtitle,
+  illustration,
+  illustrationAlt = '',
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <Header transparent={false} />
+
+  <main class="relative pt-20">
+    <!-- Hero band -->
+    <section class="relative overflow-hidden border-b border-white/5">
+      <!-- Background -->
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent/10 rounded-full blur-[150px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,var(--color-black)_75%)]"></div>
+      </div>
+
+      <Container size="wide" class="relative">
+        <div class="py-16 md:py-24 grid lg:grid-cols-[1fr_auto] gap-10 items-center">
+          <div class="max-w-2xl">
+            {badge && (
+              <FadeIn client:load>
+                <Badge variant="accent" class="mb-5">{badge}</Badge>
+              </FadeIn>
+            )}
+            <FadeIn client:load delay={0.05}>
+              <h1 class="h1 mb-4">{title}</h1>
+            </FadeIn>
+            {subtitle && (
+              <FadeIn client:load delay={0.1}>
+                <p class="text-gray-400 text-lg">{subtitle}</p>
+              </FadeIn>
+            )}
+          </div>
+
+          {illustration && (
+            <FadeIn client:load delay={0.15} direction="right">
+              <img
+                src={illustration}
+                alt={illustrationAlt}
+                class="hidden lg:block w-56 xl:w-64 h-auto opacity-90 drop-shadow-[0_0_45px_rgba(37,99,235,0.25)]"
+                loading="eager"
+              />
+            </FadeIn>
+          )}
+        </div>
+      </Container>
+    </section>
+
+    <!-- Prose content (default slot) -->
+    {Astro.slots.has('default') && (
+    <Container size="default" class="relative">
+      <div
+        class="legal-prose max-w-3xl py-14 md:py-20 prose prose-invert
+               prose-headings:font-display prose-headings:tracking-tight
+               prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4
+               prose-h3:text-xl
+               prose-p:text-gray-400 prose-li:text-gray-400
+               prose-strong:text-white
+               prose-a:text-accent-light prose-a:no-underline hover:prose-a:underline"
+      >
+        <slot />
+      </div>
+    </Container>
+    )}
+
+    <!-- Full-width content (for custom pages) -->
+    <slot name="full-width" />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  /* Quiet card styling for callout boxes inside legal prose */
+  .legal-prose :global(.callout) {
+    background: rgba(37, 99, 235, 0.06);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0;
+  }
+
+  .legal-prose :global(.callout p) {
+    margin: 0;
+    color: var(--color-gray-300);
+  }
+</style>

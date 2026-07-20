@@ -19,9 +19,10 @@ interface Props {
 const { transparent = true } = Astro.props;
 
 const navLinks = [
-  { label: 'Products', href: '#products' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'SignScan', href: '/#products' },
+  { label: 'Tools', href: '/#tools' },
+  { label: 'About', href: '/#about' },
+  { label: 'Support', href: '/support' },
 ];
 ---
 
@@ -70,10 +71,10 @@ const navLinks = [
 
     <!-- Desktop CTA Button -->
     <a
-      href="#waitlist"
+      href="/#waitlist"
       class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-full hover:bg-gray-200 transition-all duration-fast group"
     >
-      Join Waitlist
+      Get SignScan
       <svg
         class="w-4 h-4 transition-transform duration-fast group-hover:translate-x-0.5"
         fill="none"
@@ -155,12 +156,12 @@ const navLinks = [
 
       <!-- Mobile CTA -->
       <a
-        href="#waitlist"
+        href="/#waitlist"
         class="mobile-menu-link mt-4 inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transition-all duration-fast"
         style={`--delay: ${navLinks.length * 50}ms`}
         tabindex="-1"
       >
-        Join Waitlist
+        Get SignScan
         <svg
           class="w-4 h-4"
           fill="none"
